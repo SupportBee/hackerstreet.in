@@ -9,6 +9,7 @@ class Story < ActiveRecord::Base
 
   def increase_score
     self.score += 1
+    calculate_total
     save
   end
 

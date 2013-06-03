@@ -3,10 +3,7 @@ class StoriesController < ApplicationController
   before_filter :authenticate, :except => [:index, :show]
 
   def index
-    @stories = Story.find :all
-    @stories.each{|story| story.calculate_total}
     @stories = Story.find :all, :order => 'total ASC'
-    respond_with(@stories)
   end
 
   def show
