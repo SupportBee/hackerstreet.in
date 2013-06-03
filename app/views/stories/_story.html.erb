@@ -1,0 +1,18 @@
+<%= content_tag defined?(tag_type) ? tag_type : :div, class: 'story' do %>
+  <div>
+    <div class=".title">
+      <%= link_to image_tag("up_arrow.gif"), upvote_story_url(story), class: 'upvote', method: :post %>
+      <%= link_to story.title, story.url %>
+      <span class=".link-domain"> <%= "(#{story.url_domain})" %></span>
+    </div>
+    <div class=".metadata">
+      <%= points_scored story %> |
+      <% if story.comments.first.nil? %>
+        <%= link_to 'discuss', story, class: 'comments-link' %>
+      <% else %>
+        <%= link_to "#{story.comments.size} comments", story, class: 'comments-link' %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+

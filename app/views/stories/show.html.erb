@@ -1,0 +1,9 @@
+<%= render partial: 'story', locals: { story: @story } %>
+
+<%= render partial: 'comments/form', locals: { parent: @story } %>
+
+<ul>
+  <% @story.comments.each do |comment| %>
+    <%= render partial: 'comments/comment', locals: {comment: comment } %>
+  <% end %>
+</ul>

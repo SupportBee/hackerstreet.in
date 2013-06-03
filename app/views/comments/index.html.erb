@@ -1,0 +1,5 @@
+<ul>
+  <% @comments.each do |comment| %>
+    <%= nested_comments comment.comments.arrange(:order => :created_at) %>
+  <% end %>
+</ul>

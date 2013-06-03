@@ -1,0 +1,9 @@
+<%= render partial: 'comment', locals: { comment: @comment, hide_children: true } %>
+
+<%= render partial: 'form', locals: { parent: @comment } %>
+ 
+<% unless @comment.nil? %>
+  <%= nested_comments @comment.comments.arrange(:order => :created_at) %>
+<% end %>
+
+

@@ -1,0 +1,6 @@
+<ul>
+  <% @stories.each do |story| %>
+    <%= render partial: 'story', locals: { story: story} %>
+  <% end %>
+</ul>
+

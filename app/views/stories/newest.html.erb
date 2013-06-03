@@ -1,0 +1,6 @@
+<ol>
+  <% @stories.each do |story| %>
+    <%= render partial: 'story', locals: { story: story, tag_type: :li } %>
+  <% end %>
+</ol>
+
