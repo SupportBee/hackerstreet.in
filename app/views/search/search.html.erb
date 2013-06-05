@@ -1,0 +1,35 @@
+<div class = "search">
+<%= form_tag search_path, :method => :get do %>
+  <%= label_tag :q, 'Search:' %> 
+  <%= text_field_tag :q, params[:q] %>
+<% end %>
+</div>
+
+<% if params[:q] %>
+  <% if @post_results.empty? %>
+    <p>Sorry, there were no results for your query.</p>
+  <% else %>
+    <% @post_results.each do |post_result| %>
+      <% story = Story.find(post_result.external_id) %>
+      <%= link_to image_tag("up_arrow.gif"), upvote_story_url(post_result.external_id), class: 'upvote', method: :post %>
+      <%= link_to (post_result.highlight['title'].try(:html_safe) || post_result.title), story_path(post_result.external_id) %>
+      <span class=".link-domain"> <%= "(#{story.url_domain})" %></span>
+      <div class=".metadata">
+        <%= points_scored story %> |
+        <% if story.comments.first.nil? %>
+          <%= link_to 'discuss', story, class: 'comments-link' %>
+        <% else %>
+          <%= link_to "#{story.comments.size} comments", story, class: 'comments-link' %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if @results.current_page > 1 %>
+      <%= link_to '< previous', search_path(:q => params[:q], :page => @results.current_page - 1) %>
+    <% end %>
+    
+    <% if @results.num_pages > @results.current_page %>
+      <%= link_to 'next >', search_path(:q => params[:q], :page => @results.current_page + 1) %>
+    <% end %>
+  <% end %>
+<% end %>

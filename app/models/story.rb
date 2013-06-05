@@ -7,9 +7,6 @@ class Story < ActiveRecord::Base
   validates_uniqueness_of :url
   acts_as_voteable
 
-  after_save :enqueue_create_or_update_document_job
-  after_destroy :enqueue_delete_document_job
-
   def increase_score
     self.score += 1
     user = self.user
@@ -48,11 +45,4 @@ class Story < ActiveRecord::Base
 
   private
 
-  def enqueue_create_or_update_document_job
-    Delayed::Job.enqueue CreateOrUpdateSwiftypeDocumentJob.new(self.id)
-  end
-
-  def enqueue_delete_document_job
-    Delayed::Job.enqueue DeleteSwiftypeDocumentJob.new(self.id)
-  end
 end

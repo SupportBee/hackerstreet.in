@@ -24,7 +24,6 @@ gem "heroku"
 gem 'devise'
 gem 'cancan'
 gem 'swiftype'
-gem 'delayed_job_active_record'
 gem "foreman", "~> 0.63.0"
 
 group :development do
