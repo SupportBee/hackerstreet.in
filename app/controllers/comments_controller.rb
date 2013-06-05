@@ -43,5 +43,25 @@ class CommentsController < ApplicationController
 
   end
 
+  def downvote
+
+    begin
+      @comment = Comment.find(params[:id])
+      authorize! :downvote, @comment
+
+      if @comment.user_id == current_user.id
+        redirect_to :back, :flash => { :error => "User cannot vote on his own comment" }
+      else
+        current_user.vote_against(@comment)
+        @comment.decrease_score
+        redirect_to :back, :flash => { :success => "Story has been downvoted, vote count is -#{@comment.votes_against}" }
+      end
+
+    rescue ActiveRecord::RecordInvalid => e
+       redirect_to :back, :flash => { :error => "#{e.message}" }
+    end
+
+  end
+
 
 end

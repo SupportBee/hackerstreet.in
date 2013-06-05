@@ -15,9 +15,15 @@ class Comment < ActiveRecord::Base
 
   def increase_score
     self.score += 1
-    time_in_seconds = Time.now - self.created_at
-    time_in_hours = time_in_seconds/3600
-    self.total = (self.score - 1)/((time_in_hours + 2) ** 1.8)
+    user = self.user
+    user.karma += 1
+    save
+  end
+
+  def decrease_score
+    self.score -= 1
+    user = self.user
+    user.karma -= 1
     save
   end
 
