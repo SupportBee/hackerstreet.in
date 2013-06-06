@@ -26,6 +26,17 @@ class User < ActiveRecord::Base
   
   has_many :stories,    :dependent => :destroy
   has_many :comments,    :dependent => :destroy
+
+
+  def increase_karma
+    self.karma += 1
+    save
+  end
+
+  def decrease_karma
+    self.karma += 1
+    save
+  end
   
   
 end

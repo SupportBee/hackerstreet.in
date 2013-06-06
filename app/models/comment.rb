@@ -15,15 +15,11 @@ class Comment < ActiveRecord::Base
 
   def increase_score
     self.score += 1
-    user = self.user
-    user.karma += 1
     save
   end
 
   def decrease_score
     self.score -= 1
-    user = self.user
-    user.karma -= 1
     save
   end
 

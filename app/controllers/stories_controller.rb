@@ -1,12 +1,9 @@
 class StoriesController < ApplicationController
   respond_to :html, :json
-  before_filter :authenticate_user!, :except => [:index, :show]
+  before_filter :authenticate_user!, :except => [:index, :show, :newest]
 
   def index
-    @stories = Story.find :all
-    @stories.each{|story| story.calculate_total}
     @stories = Story.find :all, :order => 'total ASC'
-    respond_with(@stories)
   end
 
   def show
@@ -56,11 +53,14 @@ class StoriesController < ApplicationController
       else
         current_user.vote_for(@story)
         @story.increase_score
+        use_id = @story.user_id
+        user = User.find(use_id)
+        user.increase_karma
         redirect_to :back, :flash => { :success => "Story has been upvoted, vote count is #{@story.votes_for}" }
       end
 
     rescue ActiveRecord::RecordInvalid => e
-      redirect_to :back, :flash => { :error => "#{e.message}, #{@story.user_id}" }
+      redirect_to :back, :flash => { :error => "#{e.message}" }
     end
 
   end
@@ -76,6 +76,9 @@ class StoriesController < ApplicationController
       else
         current_user.vote_against(@story)
         @story.decrease_score
+        use_id = @story.user_id
+        user = User.find(use_id)
+        user.decrease_karma
         redirect_to :back, :flash => { :success => "Story has been downvoted, vote count is -#{@story.votes_against}" }
       end
 
