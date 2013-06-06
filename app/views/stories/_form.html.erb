@@ -1,12 +1,21 @@
 <%= form_for @story do |f| %>
   <%= f.error_messages %>
-  <p>
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </p>
-  <p>
-    <%= f.label :url %>
-    <%= f.text_field :url %>
-  </p>
-  <p><%= f.submit "Save" %></p>
+  <table class='story'><tr>
+  <td> <%= f.label :title %> </td>
+  <td> <%= f.text_field :title %> </td> 
+  </tr>
+  <tr>
+  <td> <%= f.label :url %> </td>
+  <td> <%= f.text_field :url %> </td>
+  </tr>
+  <tr>
+  <td>
+  or
+  </td>
+  </tr>
+  <tr>
+  <td> <%= f.label :text %> </td>
+  <td> <%= f.text_area :text %> </td>
+  </tr></table>
+  <p><%= f.submit "submit" %></p>
 <% end %>

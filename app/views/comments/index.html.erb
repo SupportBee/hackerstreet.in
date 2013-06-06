@@ -1,5 +1,23 @@
 <ul>
   <% @comments.each do |comment| %>
-    <%= nested_comments comment.comments.arrange(:order => :created_at) %>
+    <% if comment.user == current_user %>
+      <div>
+        <span class=".statusline">
+          <%= link_to image_tag("up_arrow.gif"), upvote_comment_url(comment.id), class: 'upvote', method: :post %>
+          <%= points_scored comment %> |
+          <%= link_to 'link', comment_path(comment) %> |
+          <% if comment.story %>
+            <%= link_to 'parent', comment.story %>
+          <% else %>
+            <%= link_to 'parent', comments_path(comment.commentable_id) %>
+          <% end %>
+        </span>
+        <br/>
+        <%= comment.body %>
+      </div>
+      <%= nested_comments comment.comments.arrange(:order => :created_at) %>
+    <% end %>
   <% end %>
 </ul>
+
+

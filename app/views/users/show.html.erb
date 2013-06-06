@@ -4,10 +4,12 @@
       <h1>
         <%= gravatar_for @user %>
         <%= @user.name %>
-      </h1>
-      <p>
+      </h1>     
+      <p> <%= "karma = #{@user.karma}" %><p>
+      
+      <a href='/comments'>comments</a>
       <div>
-        <%= link_to "Change Settings", edit_user_path(current_user) %>
+        <%= link_to "Change Settings", edit_user_registration_path %><p>
       </div>
     </td>
   </tr>

@@ -8,6 +8,8 @@
 <% if params[:q] %>
   <% if @post_results.empty? %>
     <p>Sorry, there were no results for your query.</p>
+    <p>Search Suggestions:</p>
+    <ul><li>Use more general keywords</li></ul>
   <% else %>
     <% @post_results.each do |post_result| %>
       <% story = Story.find(post_result.external_id) %>
