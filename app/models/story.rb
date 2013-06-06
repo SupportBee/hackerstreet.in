@@ -7,9 +7,12 @@ class Story < ActiveRecord::Base
   validates_uniqueness_of :url
   acts_as_voteable
 
+<<<<<<< HEAD
   after_create :enqueue_create_or_update_document_job
   after_destroy :enqueue_delete_document_job
 
+=======
+>>>>>>> 5008b1d5f50885a1f81197bacdb47f01b867057c
   def increase_score
     self.score += 1
     calculate_total
@@ -45,6 +48,7 @@ class Story < ActiveRecord::Base
   
   private
 
+<<<<<<< HEAD
   def enqueue_create_or_update_document_job
     Delayed::Job.enqueue CreateOrUpdateSwiftypeDocumentJob.new(self.id)
   end
@@ -53,4 +57,6 @@ class Story < ActiveRecord::Base
     Delayed::Job.enqueue DeleteSwiftypeDocumentJob.new(self.id)
   end
 
+=======
+>>>>>>> 5008b1d5f50885a1f81197bacdb47f01b867057c
 end
