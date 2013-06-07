@@ -1,7 +1,8 @@
 class CommentsController < ApplicationController
+  before_filter :authenticate_user!, :except => [:index, :show, :newest]
 
   def index
-    @comments = Comment.find :all, order: 'comments.created_at DESC'
+    @comments = Comment.find(:all, :order => 'comments.created_at DESC',:conditions => { :user_id => current_user.id }).paginate(:per_page => 10, :page => params[:page])
   end
  
   def show
@@ -70,7 +71,7 @@ class CommentsController < ApplicationController
   end
 
   def newest
-    @comments = Comment.find :all, order: 'comments.created_at DESC'
+    @comments = Comment.find(:all, :order => 'comments.created_at DESC').paginate(:per_page => 10, :page => params[:page])
   end
 
 

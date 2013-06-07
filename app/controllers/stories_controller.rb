@@ -1,9 +1,8 @@
 class StoriesController < ApplicationController
-  respond_to :html, :json
   before_filter :authenticate_user!, :except => [:index, :show, :newest]
 
   def index
-    @stories = Story.find :all, :order => 'total ASC'
+    @stories = Story.find(:all, :order => 'total DESC').paginate(:per_page => 10, :page => params[:page])
   end
 
   def show
@@ -89,7 +88,11 @@ class StoriesController < ApplicationController
   end
 
   def newest
-    @stories = Story.find :all, order: 'stories.created_at DESC'
+    @stories = Story.find(:all, :order => 'stories.created_at DESC').paginate(:per_page => 10, :page => params[:page])
+  end
+
+  def user_stories
+    @stories = Story.find(:all, :order => 'stories.created_at DESC', :conditions => { :user_id => current_user.id }).paginate(:per_page => 10, :page => params[:page])
   end
 
   def search

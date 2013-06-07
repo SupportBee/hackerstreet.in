@@ -1,34 +1,32 @@
 class Story < ActiveRecord::Base
 
+
   has_many :comments
   belongs_to :user
-  attr_accessible :title, :url, :created_at
-  validates_presence_of :title, :url
-  validates_uniqueness_of :url
+  attr_accessible :title, :url, :text, :created_at
+  validates_presence_of :title 
+  validates_presence_of :url unless :text
+  validates_presence_of :text unless :url
   acts_as_voteable
 
-<<<<<<< HEAD
   after_create :enqueue_create_or_update_document_job
   after_destroy :enqueue_delete_document_job
 
-=======
->>>>>>> 5008b1d5f50885a1f81197bacdb47f01b867057c
   def increase_score
     self.score += 1
-    calculate_total
     save
   end
 
   def decrease_score
     self.score -= 1
-    calculate_total
     save
   end
 
   def calculate_total
     time_in_seconds = Time.now - self.created_at
     time_in_hours = time_in_seconds/3600
-    self.total =  ((time_in_hours +2) ** 1.8)/self.score
+    self.total =  (self.score/((time_in_hours +2) ** 1.8))
+    self.total
     save
   end
 
@@ -48,7 +46,6 @@ class Story < ActiveRecord::Base
   
   private
 
-<<<<<<< HEAD
   def enqueue_create_or_update_document_job
     Delayed::Job.enqueue CreateOrUpdateSwiftypeDocumentJob.new(self.id)
   end
@@ -57,6 +54,4 @@ class Story < ActiveRecord::Base
     Delayed::Job.enqueue DeleteSwiftypeDocumentJob.new(self.id)
   end
 
-=======
->>>>>>> 5008b1d5f50885a1f81197bacdb47f01b867057c
 end
