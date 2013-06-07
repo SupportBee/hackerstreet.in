@@ -2,5 +2,6 @@
   <% @stories.each do |story| %>
     <%= render partial: 'story', locals: { story: story, tag_type: :li } %>
   <% end %>
+  <%= will_paginate @stories %>
 </ol>
 

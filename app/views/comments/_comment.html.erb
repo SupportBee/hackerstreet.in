@@ -11,7 +11,7 @@
       <% end %>
     </span>
     <br/>
-    <%= comment.body %>
+    <%= markdown(comment.body) %>
   </div>
 
   <% unless defined?(hide_children) && hide_children %>

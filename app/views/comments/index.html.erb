@@ -15,7 +15,6 @@
         <br/>
         <%= comment.body %>
       </div>
-      <%= nested_comments comment.comments.arrange(:order => :created_at) %>
     <% end %>
   <% end %>
 </ul>

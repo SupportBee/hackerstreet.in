@@ -2,8 +2,12 @@
   <div>
     <div class=".title">
       <%= link_to image_tag("up_arrow.gif"), upvote_story_url(story), class: 'upvote', method: :post %>
-      <%= link_to story.title, story.url %>
-      <span class=".link-domain"> <%= "(#{story.url_domain})" %></span>
+      <% unless story.url.empty? %>
+        <%= link_to story.title, story.url %>
+        <span class=".link-domain"> <%= "(#{story.url_domain})" %></span>
+      <% else %>
+        <%= link_to story.title, story %>
+      <% end %>
     </div>
     <div class=".metadata">
       <%= points_scored story %> |

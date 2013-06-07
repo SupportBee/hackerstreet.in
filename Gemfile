@@ -24,7 +24,11 @@ gem "heroku"
 gem 'devise'
 gem 'cancan'
 gem 'swiftype'
+gem 'delayed_job_active_record'
 gem "foreman", "~> 0.63.0"
+gem 'redcarpet'
+gem 'albino'
+gem 'nokogiri'
 
 group :development do
   gem 'rspec-rails', '2.6.1'

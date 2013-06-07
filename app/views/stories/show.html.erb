@@ -1,4 +1,7 @@
 <%= render partial: 'story', locals: { story: @story } %>
+<% if @story.text %>
+ <%= markdown(@story.text) %>
+<% end %>
 
 <%= render partial: 'comments/form', locals: { parent: @story } %>
 
