@@ -23,11 +23,18 @@ FactoryGirl.define do
   factory :story do |story|
     story.title "New Story"
     story.url   "www.example.com"
+    story.text  "this is a sample test"
   end
 end
 
 FactoryGirl.define do
   factory :comment do |comment|
     comment.content "New Comment"
+  end
+end
+
+FactoryGirl.define do 
+  factory :delayed_jobs do |job|
+    job.queue "new queue"
   end
 end

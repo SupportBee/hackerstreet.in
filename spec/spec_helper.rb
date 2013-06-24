@@ -30,7 +30,7 @@ Spork.prefork do
     config.use_transactional_fixtures = true
 
     def test_sign_in(user)
-      controller.sign_in(user)
+      controller.signed_in?(user)
     end
   end
 end

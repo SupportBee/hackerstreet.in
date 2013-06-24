@@ -29,9 +29,11 @@ gem "foreman", "~> 0.63.0"
 gem 'redcarpet'
 gem 'albino'
 gem 'nokogiri'
+gem 'table_builder', '0.0.3', :git => 'git://github.com/jchunky/table_builder.git'
+gem 'jquery-ui-rails', :git => 'git://github.com/techbang/jquery-ui-rails'
+gem 'rails_autolink'
 
 group :development do
-  gem 'rspec-rails', '2.6.1'
   gem 'annotate', '2.4.0'
   gem 'irbtools'
   gem 'faker', '0.3.1'
@@ -44,7 +46,7 @@ group :development do
 end
 
 group :test do
-  gem 'rspec-rails', '2.6.1'
+  gem 'rspec-rails', "~> 2.13.2"
   gem 'spork'
   gem 'shoulda'
   gem 'factory_girl_rails'

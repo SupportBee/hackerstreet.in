@@ -21,17 +21,9 @@ describe Comment do
       @comment.should respond_to(:user)
     end
     
-    it "should have the right associated user" do
-      @comment.user_id.should == @user.id
-      @comment.user.should == @user
-    end
   end
   
   describe "validations" do
-
-    it "should have a user id" do
-      Comment.new(@attr).should be_valid
-    end
 
     it "should require nonblank body" do
       @user.comments.build(:body => "    ").should_not be_valid

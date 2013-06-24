@@ -1,37 +1,50 @@
 HackeronRails::Application.routes.draw do
 
 
-  match '/comments' => 'comments#index'
+  devise_for :admins
+
+  devise_for :users
+
   match '/contact', :to => 'pages#contact'
   match '/about',   :to => 'pages#about'
   match '/help',    :to => 'pages#help'
-  match '/search',  :to => 'pages#search'
-  match '/signup',  :to => 'users#new'
-  match '/signin',  :to => 'sessions#new'
-  match '/signout', :to => 'sessions#destroy'
 
-  resources :users
 
-  resources :sessions,      :only => [:new, :create, :destroy]
+  resources :users do
+    get 'comments', on: :member
+    get 'stories', on: :member
+  end
 
 
   match 'new', to: 'stories#newest'
 
   resources :stories do
     post 'upvote', on: :member
+    post 'downvote', on: :member
+    get 'kill', on: :member
+    get 'blast', on: :member
+    get 'nuke', on: :member
     resources :comments, shallow: true do
       post 'upvote', on: :member
       post 'downvote', on: :member
+      get 'kill', on: :member
+      get 'blast', on: :member
     end
   end
 
+  match '/calender',    :to => 'stories#calender'
+ 
+ 
   root :to => 'stories#index'
 
-  match '/threads', to: 'stories#search'
+  match '/search' => 'search#search'
 
-  resources :comments do
+  resources :comments do 
     resources :comments
   end
+
+
+  match '/newcomments', to: 'comments#newest'
 
 
 
