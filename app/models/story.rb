@@ -1,9 +1,9 @@
 class Story < ActiveRecord::Base
 
 
-  has_many :comments
+  has_many :comments, as: :commentable
   belongs_to :user
-  attr_accessible :title, :url, :text, :created_at
+  attr_accessible :title, :url, :text, :created_at, :kill_action
   validates_presence_of :title 
   validates_presence_of :url unless :text
   validates_presence_of :text unless :url
@@ -12,13 +12,18 @@ class Story < ActiveRecord::Base
   after_create :enqueue_create_or_update_document_job
   after_destroy :enqueue_delete_document_job
 
+
   def increase_score
     self.score += 1
+    user = self.user
+    user.increase_karma
     save
   end
 
   def decrease_score
     self.score -= 1
+    user = self.user
+    user.decrease_karma
     save
   end
 
@@ -43,6 +48,27 @@ class Story < ActiveRecord::Base
     URI(url).host
   end
 
+  def kill_story
+    self.kill_action = (self.kill_action == "kill")? "un-kill" : "kill"
+    self.dead = (self.kill_action == "kill")? "false" : "true"
+    self.save
+  end
+
+  def blast_story
+    self.blast_action = (self.blast_action == "blast")? "un-blast" : "blast"
+    self.kill_action = (self.blast_action == "blast")? "kill" : "un-kill"
+    self.nuke_action = (self.blast_action == "blast")? "nuke" : "un-nuke"
+    self.dead = (self.kill_action == "kill")? "false" : "true"
+    self.save
+  end
+
+  def nuke_story
+    self.nuke_action = (self.nuke_action == "nuke")? "un-nuke" : "nuke"
+    self.blast_action = (self.nuke_action == "nuke")? "blast" : "un-blast"
+    self.kill_action = (self.nuke_action == "nuke")? "kill" : "un-kill"
+    self.dead = (self.kill_action == "kill")? "false" : "true"
+    self.save
+  end
   
   private
 

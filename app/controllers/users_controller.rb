@@ -1,46 +1,42 @@
 class UsersController < ApplicationController
   
   def index
-    @users = User.paginate(:page => params[:page])
-    @title = "All users"
+    @users = User.find(:all, :order => 'karma DESC').paginate(:per_page => 10, :page => params[:page])
   end
   
   def show
     @user = User.find(params[:id])
-    @title = @user.name
-  end
-
-
-  def new
-    @user  = User.new
-    @title = "Sign up"
-  end
-  
-  def create
-    @user = User.new(params[:user])
-    if @user.save
-      sign_in @user
-      redirect_to @user
-    else
-      @title = "Sign up"
-      render 'new'
+    if user_signed_in? && current_user.role == "admin"
+      render 'update'
     end
   end
   
   def edit
-    @title = "Edit user"
+    @user = User.new(params[:user])
   end
   
   def update
+    @user = User.find(params[:id])
     if @user.update_attributes(params[:user])
       redirect_to @user, :flash => { :success => "Profile updated." }
     else
-      @title = "Edit user"
-      render 'edit'
+      render 'update'
     end
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    redirect_to @user
+  end
 
-  private
+ def comments
+   @comments = Comment.find(:all, :order => 'comments.created_at DESC', :conditions => {:user_id => params[:id]}).paginate(:per_page => 10, :page => params[:page])
+ end
+
+ def stories
+   @stories = Story.find(:all, :order => 'stories.created_at DESC', :conditions => {:user_id => params[:id]}).paginate(:per_page => 10, :page => params[:page])
+ end
+
 
 end

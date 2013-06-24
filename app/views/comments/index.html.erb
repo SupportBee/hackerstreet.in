@@ -1,6 +1,5 @@
 <ul>
-  <% @comments.each do |comment| %>
-    <% if comment.user == current_user %>
+  <% @comments.each do |comment| %> 
       <div>
         <span class=".statusline">
           <%= link_to image_tag("up_arrow.gif"), upvote_comment_url(comment.id), class: 'upvote', method: :post %>
@@ -9,13 +8,12 @@
           <% if comment.story %>
             <%= link_to 'parent', comment.story %>
           <% else %>
-            <%= link_to 'parent', comments_path(comment.commentable_id) %>
+            <%= link_to 'parent', comment_path(comment.commentable_id) %>
           <% end %>
         </span>
         <br/>
-        <%= comment.body %>
+        <%= markdown(comment.body) %>
       </div>
-    <% end %>
   <% end %>
 </ul>
 

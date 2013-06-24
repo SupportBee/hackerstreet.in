@@ -20,13 +20,43 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation
+  attr_accessible :name, :karma, :ignore, :admin, :email, :password, :password_confirmation
 
   acts_as_voter
+
+  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+
+  validates :name,  :presence => true,
+                    :length   => { :maximum => 50 }
+  validates :email, :format     => { :with => email_regex },
+                    :uniqueness => { :case_sensitive => false }
+  validates :password, :presence => true,
+                       :confirmation => true,
+                       :length => { :within => 6..40 }
   
   has_many :stories,    :dependent => :destroy
-  has_many :comments,    :dependent => :destroy
+  has_many :comments, as: :commentable,   :dependent => :destroy
 
+  scope :with_role, lambda { |role| {:conditions => "roles_mask & #{2**ROLES.index(role.to_s)} > 0"} }
+  
+  ROLES = %w[admin moderator author]
+  
+  def roles=(roles)
+    self.roles_mask = (roles & ROLES).map { |r| 2**ROLES.index(r) }.sum
+  end
+  
+  def roles
+    ROLES.reject { |r| ((roles_mask || 0) & 2**ROLES.index(r)).zero? }
+  end
+  
+  def role_symbols
+    roles.map(&:to_sym)
+  end
+
+  def mark_as_blocked(value)
+    self.ignore = value
+    self.save
+  end
 
   def increase_karma
     self.karma += 1

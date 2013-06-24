@@ -9,6 +9,21 @@
       <% else %>
         <%= link_to 'parent', comment_path(comment.commentable_id) %>
       <% end %>
+      <% if can? :update, comment %>
+        | <%= link_to "edit", edit_comment_path(comment) %>
+      <% end %>
+      <% if can? :kill, comment %>
+        | <%= link_to comment.kill_action, kill_comment_path(comment) %>
+      <% end %>    
+      <% if can? :blast, comment %>
+        | <%= link_to comment.blast_action, blast_comment_path(comment), :id => "blast" %>
+      <% end %>  
+      <% if can? :destroy, comment %>
+        | <%= link_to "delete", comment, :method => :delete, :confirm => "Are you sure?" %>
+      <% end %>
+      <% if (comment.kill_action == "un-kill") && (user_signed_in? && (comment.user != current_user || current_user.role == "admin")) %>
+        <%= " [dead] " %>
+      <% end %>
     </span>
     <br/>
     <%= markdown(comment.body) %>

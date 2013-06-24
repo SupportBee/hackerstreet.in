@@ -3,7 +3,9 @@
  <%= markdown(@story.text) %>
 <% end %>
 
-<%= render partial: 'comments/form', locals: { parent: @story } %>
+<% unless @story.kill_action == "un-kill" %>
+  <%= render partial: 'comments/form', locals: { parent: @story } %>
+<% end %>
 
 <ul>
   <% @story.comments.each do |comment| %>

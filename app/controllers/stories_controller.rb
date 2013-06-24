@@ -1,8 +1,11 @@
 class StoriesController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :show, :newest]
+  respond_to :html, :json
+  load_and_authorize_resource
+
+  before_filter :authenticate_user!, :except => [:index, :show, :newest, :calender]
 
   def index
-    @stories = Story.find(:all, :order => 'total DESC').paginate(:per_page => 10, :page => params[:page])
+    @stories = Story.order('total DESC').paginate(:per_page => 10, :page => params[:page])
   end
 
   def show
@@ -20,10 +23,15 @@ class StoriesController < ApplicationController
   def create
     @story = Story.new(params[:story])
     @story.user_id = current_user.id
-    if @story.save
-      redirect_to @story, :flash => { :success => 'Story was successfully created.' }
+    user_story = params[:story]
+    if !(user_story[:text].empty? || user_story[:url].empty?)
+      redirect_to :back, :flash => { :error => 'Cannot provide both text and url.' }
     else
-      redirect_to @story, :flash => { :error => 'Story was not created' }
+      if @story.save
+        redirect_to @story, :flash => { :success => "Story was successfully created." }
+      else
+        redirect_to :back, :flash => { :error => 'Story was not created' }
+      end
     end
   end
 
@@ -32,7 +40,7 @@ class StoriesController < ApplicationController
     if @story.update_attributes(params[:story])
       redirect_to @story, :flash => { :success => 'Story was successfully updated.' }
     else
-      redirect_to @story, :flash => { :error => 'Story was not created' }
+      redirect_to @story, :flash => { :error => 'Story was not updated' }
     end
   end
 
@@ -52,14 +60,11 @@ class StoriesController < ApplicationController
       else
         current_user.vote_for(@story)
         @story.increase_score
-        use_id = @story.user_id
-        user = User.find(use_id)
-        user.increase_karma
         redirect_to :back, :flash => { :success => "Story has been upvoted, vote count is #{@story.votes_for}" }
       end
 
     rescue ActiveRecord::RecordInvalid => e
-      redirect_to :back, :flash => { :error => "#{e.message}" }
+      redirect_to :back, :flash => { :error => "User has already voted on this story" }
     end
 
   end
@@ -68,21 +73,17 @@ class StoriesController < ApplicationController
 
     begin
       @story = Story.find(params[:id])
-      authorize! :downvote, @story
 
       if @story.user_id == current_user.id
         redirect_to :back, :flash => { :error => "User cannot vote on his own story" }
       else
         current_user.vote_against(@story)
         @story.decrease_score
-        use_id = @story.user_id
-        user = User.find(use_id)
-        user.decrease_karma
         redirect_to :back, :flash => { :success => "Story has been downvoted, vote count is -#{@story.votes_against}" }
       end
 
     rescue ActiveRecord::RecordInvalid => e
-       redirect_to :back, :flash => { :error => "#{e.message}" }
+       redirect_to :back, :flash => { :error => "User has already voted on this story" }
     end
 
   end
@@ -91,12 +92,37 @@ class StoriesController < ApplicationController
     @stories = Story.find(:all, :order => 'stories.created_at DESC').paginate(:per_page => 10, :page => params[:page])
   end
 
-  def user_stories
-    @stories = Story.find(:all, :order => 'stories.created_at DESC', :conditions => { :user_id => current_user.id }).paginate(:per_page => 10, :page => params[:page])
-  end
-
   def search
     @stories = Story.search(params[:search]).order().paginate(:per_page => 5, :page => params[:page])
+  end
+
+  def calender
+    @stories = Story.find(:all, :order => 'total DESC', :limit => '1')
+    @date = params[:month] ? Date.parse("#{params[:month]}-01") : Date.today
+  end
+
+  def kill
+    @story = Story.find(params[:id])
+    @story.kill_story
+    redirect_to :back
+  end
+
+  def blast
+    @story = Story.find(params[:id])
+    @story.blast_story
+    user = @story.user
+    user.mark_as_blocked(@story.dead)
+    @story.save
+    redirect_to :back
+  end
+
+  def nuke
+    @story = Story.find(params[:id])
+    @story.nuke_story
+    user = @story.user
+    user.mark_as_blocked(@story.dead)
+    @story.save
+    redirect_to :back
   end
 
 end
