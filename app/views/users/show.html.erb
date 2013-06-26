@@ -5,13 +5,11 @@
         <%= gravatar_for @user %>
         <%= @user.name %>
       </h1>
-      <div class="sidebar round">     
-        <p><%= "karma = #{@user.karma}" %>    
-        <p><a href='/comments'><u>comments</u></a>
-        <p><a href='/userstories'><u>stories</u></a>
-      </div>
-      <div>
-        <%= link_to "Change Settings", edit_user_registration_path %><p>
+      <div> 
+        <p><%= "karma = #{@user.karma}" %>   
+        <p><%= link_to "comments", comments_user_path %> 
+        <p><%= link_to "stories", stories_user_path %>    
+        <p><%= link_to "Change Settings", edit_user_registration_path %><p>
       </div>
     </td>
   </tr>

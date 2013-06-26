@@ -1,0 +1,27 @@
+<%= form_for @user do |f| %>
+  <%= f.error_messages %>
+  <table class="profile" summary="Profile information">
+    <tr><td> <%= f.label :name %> </td>
+    <td> <%= f.text_field :name %> </td> 
+    </tr>
+    <tr>
+    <tr><td> <%= f.label :created %> </td>
+    <td> <%= time_ago_in_words @user.created_at %><%= " ago" %></td> 
+    </tr>
+    <tr>
+    <td> <%= f.label :karma %> </td>
+    <td> <%= f.text_field :karma %> </td>
+    </tr>
+    <tr>
+    <td> <%= f.label :email %> </td>
+    <td> <%= f.text_field :email %> </td>
+    </tr>
+    <tr>
+    <td><%= f.label :ignore %></td>
+    <td><%= @user.ignore %></td>
+    </tr>
+  </table>
+  <p><%= f.submit "update" %></p>
+<% end %>
+<p><%= link_to "comments", comments_user_path %> |
+<%= link_to "stories", stories_user_path %>

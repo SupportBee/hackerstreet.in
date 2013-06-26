@@ -1,6 +1,7 @@
 <h1> Sign In </h1>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+  <%= f.error_messages %>
 
   <p><%= f.label :name %><br/>
   <%= f.text_field :name %></p>

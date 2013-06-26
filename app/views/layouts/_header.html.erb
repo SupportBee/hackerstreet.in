@@ -1,21 +1,26 @@
 <header>
-  <nav class="round">
+  <nav>
     <div class="subnav">
-      <ul class="nav nav-pills">
+      <ul>
         <% if signed_in? %>
-          <li><%= link_to "profile", current_user %></li>
-          <li><%= link_to 'new', '/new' %></li>
-          <li><%= link_to 'threads', search_path %></li>
-          <li><%= link_to 'comments', newcomments_path %></li>
-          <li><%= link_to "help", help_path %></li>
-          <li><%= link_to 'submit', new_story_path %></li>
+          <li><%= link_to "HackerStreet.India", stories_path, {:style=>'color:#000000;'} %></li>
+          <li><%= link_to "profile", current_user %></li> |
+          <li><%= link_to 'new', '/new' %></li> |
+          <li><%= link_to 'threads', search_path %></li> |
+          <li><%= link_to 'comments', comments_path %></li> |
+          <li><%= link_to "help", help_path %></li> |
+          <li><%= link_to "leaders", users_path %></li> | 
+          <li><%= link_to "calender", calender_path %></li> |
+          <li><%= link_to 'submit', new_story_path %></li> |
           <li><%= link_to "log out", destroy_user_session_path %></li>
         <% else %>
-          <li><%= link_to 'new', '/new' %></li>
-          <li><%= link_to 'comments', newcomments_path %></li>
-          <li><%= link_to "help", help_path %></li>
-          <li><%= link_to 'submit', new_story_path %></li>
-          <li><%= link_to "log in", new_user_session_path %></li> or <li><%= link_to "sign up", new_user_registration_path %></li>
+          <li><%= link_to 'new', '/new' %></li> |
+          <li><%= link_to 'comments', newcomments_path %></li> |
+          <li><%= link_to "help", help_path %></li> |
+          <li><%= link_to "leaders", users_path %></li> | 
+          <li><%= link_to "calender", calender_path %></li> |
+          <li><%= link_to 'submit', new_story_path %></li> |
+          <li><%= link_to "log in", new_user_session_path %></li>
         <% end %>
       </ul>    
     </div>

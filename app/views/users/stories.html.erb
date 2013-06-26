@@ -1,0 +1,7 @@
+<ul>
+  <% @stories.each do |story| %>
+    <% story.calculate_total %>
+    <%= render partial: 'stories/story', locals: { story: story} %>
+  <% end %>
+  <%= will_paginate @stories %>
+</ul>

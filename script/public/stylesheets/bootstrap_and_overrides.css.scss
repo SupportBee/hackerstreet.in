@@ -1,0 +1,96 @@
+@import "bootstrap";
+@import url('//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700');
+body { padding-top: 60px; 
+        
+}
+
+@import "bootstrap-responsive";
+
+
+body {
+    background-color: #FCFCFC;
+    font-family: "Segoe UI","Segoe WP","Helvetica Neue",sans-serif;
+    font-size: 14px;
+    line-height: 25px;
+    margin: 0;
+}
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+   width      : 985px;
+    
+}
+
+.span12 {
+    width: 985px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: inherit;
+    font-family: "Segoe UI Light","Helvetica Neue","Segoe UI","Segoe WP",sans-serif;
+    font-weight: 100;
+    line-height: 25px;
+    margin: 12.5px 0;
+    text-rendering: optimizelegibility;
+}
+
+ .navbar-inner {
+    
+      background-color: #F8F8F8;
+      background-image:none;
+      border-bottom-color: #E0E0E0;
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+      color: #333334;
+      filter:none;
+  }
+
+.nav-pills > li > a {
+  -moz-border-radius:    10px;
+  -webkit-border-radius: 10px;
+  border-radius:         10px;
+}
+
+input[type="password"],input[type="email"],input[type="text"] {
+    border: 1px solid #A9ABAC;
+    display: inline-block;
+    font-size: 18px;
+    margin: 10px 0;
+    padding: 10px;
+    width: 480px;
+    box-shadow: none;
+    border-radius: 0px;
+}
+
+input[type="email"]:focus, input[type="password"]:focus,input[type="text"]:focus {
+    box-shadow: none;
+}
+
+input[type="submit"] {
+    background-image: none;
+    border: medium none;
+    border-radius: 0 0 0 0;
+    box-shadow: none;
+    padding: 10px 20px;
+    text-shadow: none;
+}
+
+
+.registeration-form > header {
+    background-color: #4C5355;
+    color: #FFFFFF;
+    display: block;
+    height: 160px;
+    left: 0;
+    padding: 25px 90px 0;
+    position: absolute;
+    top: 0;
+    width: 980px;
+}
+
+.dropdown-menu {
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.modal { border-radius: 0; }
+
+.btn {border-radius: 0;}
